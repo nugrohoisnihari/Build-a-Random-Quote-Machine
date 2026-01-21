@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Random Quote Machine</title>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #quote-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #text {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #author {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #555;
+    }
+
+    #new-quote {
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #tweet-quote {
+      color: #007BFF;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/javascript">
+    const quotes = [
+      { text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde" },
+      { text: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.", author: "Albert Einstein" },
+      { text: "So many books, so little time.", author: "Frank Zappa" },
+      { text: "A room without books is like a body without a soul.", author: "Marcus Tullius Cicero" },
+      { text: "You only live once, but if you do it right, once is enough.", author: "Mae West" }
+    ];
+
+    class QuoteMachine extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = this.getRandomQuote();
+        this.getNewQuote = this.getNewQuote.bind(this);
+      }
+
+      getRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        return quotes[randomIndex];
+      }
+
+      getNewQuote() {
+        this.setState(this.getRandomQuote());
+      }
+
+      render() {
+        const { text, author } = this.state;
+        const tweetUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(`"${text}" - ${author}`);
+        return (
+          React.createElement("div", { id: "quote-box" },
+            React.createElement("div", { id: "text" }, text),
+            React.createElement("div", { id: "author" }, "- " + author),
+            React.createElement("button", { id: "new-quote", onClick: this.getNewQuote }, "New Quote"),
+            React.createElement("a", { id: "tweet-quote", href: tweetUrl, target: "_blank", rel: "noopener noreferrer" }, "Tweet")
+          )
+        );
+      }
+    }
+
+    ReactDOM.render(
+      React.createElement(QuoteMachine),
+      document.getElementById("root")
+    );
+  </script>
+</body>
+
+</html>
